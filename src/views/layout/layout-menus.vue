@@ -1,30 +1,35 @@
 <template>
   <a-menu theme="dark" mode="inline" :defaultSelectedKeys="['1']">
-    <a-menu-item v-for="menu in menus">
+    <a-menu-item v-for="(menu, i) in menus" :key="i">
       <a-icon :type="menu.icon" />
-      <span>{{ menu.name }}</span>
+      <router-link :to="menu.path">{{ menu.name }}</router-link>
     </a-menu-item>
   </a-menu>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { MenuItem } from "@/models/menu-item";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { MenuItem } from '@/models/menu-item';
 
 @Component({
-  name: "layout-menus",
-  components: {}
+  name: 'layout-menus',
+  components: {},
 })
-export default class layoutMenus extends Vue {
+export default class LayoutMenus extends Vue {
   menus: MenuItem[] = [];
 
   mounted() {
     this.menus = [
       {
-        name: "ユーザ",
-        icon: "user",
-        path: ""
-      }
+        name: 'ユーザ',
+        icon: 'user',
+        path: '/',
+      },
+      {
+        name: '問題',
+        icon: 'user',
+        path: '/problems',
+      },
     ] as MenuItem[];
   }
 }

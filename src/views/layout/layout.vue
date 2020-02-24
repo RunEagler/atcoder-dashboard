@@ -17,24 +17,28 @@
           margin: '24px 16px',
           padding: '24px',
           background: '#fff',
-          minHeight: '280px'
+          minHeight: '280px',
         }"
       >
-        Content
+        <a-breadcrumb class="text-left">
+          <a-breadcrumb-item>User</a-breadcrumb-item>
+          <a-breadcrumb-item>Bill</a-breadcrumb-item>
+        </a-breadcrumb>
+        <router-view />
       </a-layout-content>
     </a-layout>
   </a-layout>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import LayoutMenus from "@/views/layout/layout-menus.vue";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import LayoutMenus from '@/views/layout/layout-menus.vue';
 
 @Component({
-  name: "layout",
-  components: { LayoutMenus }
+  name: 'Layout',
+  components: { LayoutMenus },
 })
-export default class layout extends Vue {
+export default class Layout extends Vue {
   collapsed: boolean = false;
   mounted() {}
 }
