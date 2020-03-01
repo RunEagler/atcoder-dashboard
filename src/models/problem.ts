@@ -8,7 +8,8 @@ export class Problem implements Serializable<Problem> {
   title: string;
   score: number;
   originalCode: string;
-  tags: Tag[];
+  lastPath: string;
+  tags: Tag[] = [];
 
   deserialize(input: any): Problem {
     this.id = input.id;
@@ -17,6 +18,7 @@ export class Problem implements Serializable<Problem> {
     this.title = input.title;
     this.score = input.score;
     this.originalCode = input.original_code;
+    this.lastPath = input.last_path;
     if (input.tags && input.tags.length > 0) {
       this.tags = input.tags.map((tag: Tag) => new Tag().deserialize(tag));
     }

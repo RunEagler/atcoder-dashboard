@@ -7,6 +7,12 @@ import { levelApi } from '@/services/api/level.api';
 class LevelModule extends VuexModule {
   levels: Level[] = [];
 
+  get findLevel() {
+    return (levelID: number): Level => {
+      return this.levels.find((level: Level) => level.id === levelID) || new Level();
+    };
+  }
+
   @Mutation
   setLevel(levels: Level[]) {
     this.levels = levels;

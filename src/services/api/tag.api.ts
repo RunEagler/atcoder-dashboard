@@ -9,6 +9,10 @@ class TagApi extends ApiService {
   fetchTags(): Promise<Tag[]> {
     return this.getList(Tag, `/tags`, {});
   }
+
+  addTag(tag: Tag): Promise<Tag> {
+    return this.post(Tag, `/tags`, { tag });
+  }
 }
 
 export const tagApi = new TagApi();

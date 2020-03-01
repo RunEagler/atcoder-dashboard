@@ -1,5 +1,5 @@
 <template>
-  <a-layout id="components-layout-demo-custom-trigger" style="height:1200px">
+  <a-layout id="components-layout-demo-custom-trigger" style="height:970px">
     <a-layout-sider :trigger="null" collapsible v-model="collapsed">
       <div class="logo" />
       <layout-menus></layout-menus>
@@ -20,10 +20,7 @@
           minHeight: '280px',
         }"
       >
-        <a-breadcrumb class="text-left">
-          <a-breadcrumb-item>User</a-breadcrumb-item>
-          <a-breadcrumb-item>Bill</a-breadcrumb-item>
-        </a-breadcrumb>
+        <layout-breadcrubms></layout-breadcrubms>
         <router-view />
       </a-layout-content>
     </a-layout>
@@ -33,10 +30,11 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import LayoutMenus from '@/views/layout/layout-menus.vue';
+import LayoutBreadcrubms from '@/views/layout/layout-breadcrubms.vue';
 
 @Component({
   name: 'Layout',
-  components: { LayoutMenus },
+  components: { LayoutBreadcrubms, LayoutMenus },
 })
 export default class Layout extends Vue {
   collapsed: boolean = false;

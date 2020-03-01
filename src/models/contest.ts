@@ -1,7 +1,7 @@
 import { Serializable } from '@/models/serializable';
 
 export class Contest implements Serializable<Contest> {
-  id: number;
+  id: number = 0;
   name: string;
   originalCode: string;
 

@@ -7,9 +7,20 @@ import { tagApi } from '@/services/api/tag.api';
 class TagModule extends VuexModule {
   tags: Tag[] = [];
 
+  get findTag() {
+    return (tagID: number): Tag => {
+      return this.tags.find((tag: Tag) => tag.id === tagID) || new Tag();
+    };
+  }
+
   @Mutation
   setTags(tags: Tag[]) {
     this.tags = tags;
+  }
+
+  @Action
+  async addTag(tag: Tag) {
+    const result = await tagApi.addTag(tag);
   }
 
   @Action

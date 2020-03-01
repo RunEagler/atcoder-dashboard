@@ -1,8 +1,8 @@
 <template>
-  <a-menu theme="dark" mode="inline" :defaultSelectedKeys="['1']">
+  <a-menu theme="dark" mode="inline" :defaultSelectedKeys="['1']" @click="handleClick">
     <a-menu-item v-for="(menu, i) in menus" :key="i">
       <a-icon :type="menu.icon" />
-      <router-link :to="menu.path">{{ menu.name }}</router-link>
+      {{ menu.name }}
     </a-menu-item>
   </a-menu>
 </template>
@@ -23,7 +23,7 @@ export default class LayoutMenus extends Vue {
       {
         name: 'ユーザ',
         icon: 'user',
-        path: '/',
+        path: '/users',
       },
       {
         name: '問題',
@@ -31,6 +31,10 @@ export default class LayoutMenus extends Vue {
         path: '/problems',
       },
     ] as MenuItem[];
+  }
+
+  handleClick(e: any) {
+    this.$router.push(this.menus[e.key].path);
   }
 }
 </script>

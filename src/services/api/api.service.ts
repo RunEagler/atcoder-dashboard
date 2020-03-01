@@ -2,6 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { Serializable } from '@/models/serializable';
 import { PagingData } from '@/models/paging-data';
 import { Pagination } from '@/models/pagination';
+import { Empty } from '@/models/empty';
 
 type errorHandlerFunc = (error: any) => any;
 

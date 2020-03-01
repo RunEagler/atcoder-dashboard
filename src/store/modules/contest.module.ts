@@ -7,7 +7,7 @@ import { contestApi } from '@/services/api/contest.api';
 class ContestModule extends VuexModule {
   contests: Contest[] = [];
 
-  get contest() {
+  get findContest() {
     return (contestID: number): Contest => {
       return this.contests.find((contest: Contest) => contest.id === contestID) || new Contest();
     };
