@@ -2,21 +2,30 @@
   <div class="q-pa-md" v-if="lazy">
     <a-card class="text-left">
       <a-row>
-        <a-col span="3">Contest</a-col>
+        <a-col span="6">Contest</a-col>
         <a-col span="2">Level</a-col>
+        <a-col span="10">Tag</a-col>
       </a-row>
       <a-row>
-        <a-col span="3">
-          <a-select :defaultValue="selectedContest.id" style="width: 200px" @change="handleChangeContest">
+        <a-col span="6">
+          <a-select :defaultValue="selectedContest.id" @change="handleChangeContest" style="width:100%">
             <a-select-option v-for="(contest, i) in contests" :key="`contest-${i}`" :value="contest.id">
               {{ contest.name }}
             </a-select-option>
           </a-select>
         </a-col>
         <a-col span="2">
-          <a-select :defaultValue="selectedLevel.id" style="width: 200px" @change="handleChangeLevel">
+          <a-select :defaultValue="selectedLevel.id" @change="handleChangeLevel" style="width:100%">
             <a-select-option v-for="(l, i) in levels" :value="l.id" :key="i">
               {{ l.level }}
+            </a-select-option>
+          </a-select>
+        </a-col>
+        <a-col span="10">
+          <a-select :defaultValue="0" @change="handleChangeTag" style="width:100%">
+            <a-select-option :value="0">select filter tag</a-select-option>
+            <a-select-option v-for="(t, i) in tags" :value="t.id" :key="i">
+              {{ t.word }}
             </a-select-option>
           </a-select>
         </a-col>
@@ -39,18 +48,15 @@
         <a-tag
           v-for="tag in record.tags"
           :key="tag.ID"
-          :closable="index !== 0"
+          closable
           :afterClose="() => handleClose(tag)"
           class="fs-20"
           color="blue"
+          @close="handleCloseTag"
         >
           <span class="fs-20">{{ tag.word }}</span>
         </a-tag>
-        <problem-new-tag
-          v-model="newWord"
-          @blur="handleCreateTag(index, $event)"
-          @select="handleSetTag(index, $event)"
-        ></problem-new-tag>
+        <problem-new-tag @blur="handleCreateTag(index, $event)" @select="handleSetTag(index, $event)"></problem-new-tag>
       </template>
     </a-table>
   </div>
@@ -69,6 +75,7 @@ import { FetchProblems } from '@/models/request/fetch-problems';
 import { Tag } from '@/models/tag';
 import ProblemNewTag from '@/views/Problem/ProblemNewTag.vue';
 import { tagModule } from '@/store/modules/tag.module';
+import { UpdateProblem } from '@/models/request/update-problem';
 
 @Component({
   name: 'ProblemView',
@@ -104,20 +111,11 @@ export default class ProblemView extends Vue {
         scopedSlots: { customRender: 'problemTag' },
         dataIndex: 'problemTag',
       },
-      // {
-      //   title: 'score',
-      //   key: 'score',
-      //   dataIndex: 'score',
-      // },
-      // {
-      //   title: 'findLevel',
-      //   key: 'findLevel',
-      //   dataIndex: 'findLevel',
-      // },
     ];
   }
 
   async mounted() {
+    tagModule.fetchTags();
     await levelModule.fetchLevels();
     await contestModule.fetchContests();
 
@@ -163,6 +161,10 @@ export default class ProblemView extends Vue {
     return problemModule.problemsPerPage;
   }
 
+  get tags(): Tag[] {
+    return tagModule.tags;
+  }
+
   handleChangeContest(contestID: number) {
     this.selectedContest = contestModule.findContest(contestID);
     problemModule.fetchProblems({
@@ -173,9 +175,11 @@ export default class ProblemView extends Vue {
   }
 
   handleSetTag(index: number, tagID: number) {
+    const targetProblem: Problem = this.problemsPerPage.data[index];
     const tag: Tag = tagModule.findTag(tagID);
 
-    this.problemsPerPage.data[index].tags.push(tag);
+    targetProblem.tags.push(tag);
+    problemModule.updateTagProblem({ problemID: targetProblem.id, tags: targetProblem.tags } as UpdateProblem);
   }
 
   handleCreateTag(index: number, value: string) {
@@ -196,9 +200,19 @@ export default class ProblemView extends Vue {
     } as FetchProblems);
   }
 
+  handleCloseTag(problemIndex: number, tagIndex: number) {
+    this.problemsPerPage.data[problemIndex].tags.splice(tagIndex, 1);
+    problemModule.updateTagProblem({
+      problemID: this.problemsPerPage.data[problemIndex].id,
+      tags: this.problemsPerPage.data[problemIndex].tags,
+    } as UpdateProblem);
+  }
+
   fetchProblems(fetchProblems: FetchProblems) {
     problemModule.fetchProblems(fetchProblems);
   }
+
+  handleChangeTag() {}
 
   handlePage(page: any) {
     problemModule.fetchProblems({

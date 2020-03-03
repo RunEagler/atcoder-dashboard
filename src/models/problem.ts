@@ -12,7 +12,7 @@ export class Problem implements Serializable<Problem> {
   tags: Tag[] = [];
 
   deserialize(input: any): Problem {
-    this.id = input.id;
+    this.id = input.problem_id;
     this.levelID = input.level_id;
     this.contestID = input.contest_id;
     this.title = input.title;

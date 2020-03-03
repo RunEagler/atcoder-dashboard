@@ -24,7 +24,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
   name: 'create-tag',
   components: {},
 })
-export default class createTag extends Vue {
+export default class CreateTag extends Vue {
   visible: boolean = false;
   inputValue: string = '';
 
@@ -38,7 +38,7 @@ export default class createTag extends Vue {
     });
   }
 
-  handleInputChange(e) {
+  handleInputChange(e: any) {
     this.inputValue = e.target.value;
   }
 

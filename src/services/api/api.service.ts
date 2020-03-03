@@ -12,7 +12,7 @@ let apiErrorHandler: errorHandlerFunc;
 
 export const API = axios.create({
   baseURL: baseURL + '/api/',
-  // withCredentials: true,
+  withCredentials: true,
   timeout: 60000,
 });
 
@@ -22,6 +22,8 @@ export function setApiErrorHandler(handler: errorHandlerFunc) {
 
 API.interceptors.request.use(
   config => {
+    // config.headers['Content-Type'] = 'application/json';
+    config.headers['Access-Control-Allow-Origin'] = '*';
     config.params = config.params || {};
     // config.params['lang'] = cookieService.language;
 

@@ -1,5 +1,6 @@
 import { ApiService } from '@/services/api/api.service';
 import { Tag } from '@/models/tag';
+import { Empty } from '@/models/empty';
 
 class TagApi extends ApiService {
   constructor() {
@@ -11,7 +12,7 @@ class TagApi extends ApiService {
   }
 
   addTag(tag: Tag): Promise<Tag> {
-    return this.post(Tag, `/tags`, { tag });
+    return this.post(Tag, '/tags', { tag });
   }
 }
 
