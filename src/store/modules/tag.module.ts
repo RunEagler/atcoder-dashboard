@@ -19,8 +19,8 @@ class TagModule extends VuexModule {
   }
 
   @Action
-  async addTag(tag: Tag) {
-    const result = await tagApi.addTag(tag);
+  async addTag(tag: Tag): Promise<Tag> {
+    return await tagApi.addTag(tag);
   }
 
   @Action

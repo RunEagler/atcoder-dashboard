@@ -22,8 +22,7 @@ export function setApiErrorHandler(handler: errorHandlerFunc) {
 
 API.interceptors.request.use(
   config => {
-    // config.headers['Content-Type'] = 'application/json';
-    config.headers['Access-Control-Allow-Origin'] = '*';
+    config.headers['Content-Type'] = 'application/json';
     config.params = config.params || {};
     // config.params['lang'] = cookieService.language;
 

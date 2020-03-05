@@ -10,8 +10,19 @@ class ProblemApi extends ApiService {
     super();
   }
 
-  updateTagProblem(problemID: number, tags: Tag[]): Promise<Empty> {
-    return this.put(Empty, `/problems/${problemID}`, { tags });
+  addTagProblem(problemID: number, tagID: number): Promise<Empty> {
+    return this.post(Empty, `/problems/${problemID}/tags/${tagID}`, {});
+  }
+
+  deleteTagProblem(problemID: number, tagID: number): Promise<Empty> {
+    return this.delete(`/problems/${problemID}/tags/${tagID}`, {});
+  }
+
+  updateProblem(problemID: number, isAnswer: boolean, isFavorite: boolean): Promise<Empty> {
+    return this.put(Empty, `/problems/${problemID}`, {
+      is_answer: isAnswer,
+      is_favorite: isFavorite,
+    });
   }
 
   fetchProblems(fetchProblems: FetchProblems): Promise<Pagination<Problem>> {

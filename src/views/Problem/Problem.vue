@@ -39,6 +39,17 @@
       @change="handlePage"
       rowKey="originalCode"
     >
+      <template slot="isAnswer" slot-scope="text, record, index">
+        <a-icon
+          v-if="record.isAnswer"
+          type="check-circle"
+          theme="filled"
+          style="color:#52c41a;"
+          class="fs-20"
+          @click="handleClickAnswer(index, record)"
+        />
+        <a-icon v-else type="check-circle" class="fs-20" @click="handleClickAnswer(index, record)" />
+      </template>
       <template slot="originalCode" slot-scope="text, record, index">
         <a @click="handleLinkProblemPage(record)" :key="text"
           >{{ selectedContest.originalCode }}{{ text }}_{{ selectedLevel.level }}</a
@@ -47,16 +58,27 @@
       <template slot="problemTag" slot-scope="text, record, index">
         <a-tag
           v-for="tag in record.tags"
-          :key="tag.ID"
+          :key="tag.id"
           closable
           :afterClose="() => handleClose(tag)"
-          class="fs-20"
+          class="fs-16"
           color="blue"
-          @close="handleCloseTag"
+          @close="handleCloseTag(record.id, tag.id)"
         >
           <span class="fs-20">{{ tag.word }}</span>
         </a-tag>
         <problem-new-tag @blur="handleCreateTag(index, $event)" @select="handleSetTag(index, $event)"></problem-new-tag>
+      </template>
+      <template slot="action" slot-scope="text, record, index">
+        <a-icon
+          v-if="record.isFavorite"
+          type="heart"
+          theme="filled"
+          @click="handleClickFavorite(index, record)"
+          style="color:#eb2f96;"
+          class="fs-20"
+        />
+        <a-icon v-else type="heart" @click="handleClickFavorite(index, record)" class="fs-20" />
       </template>
     </a-table>
   </div>
@@ -76,6 +98,8 @@ import { Tag } from '@/models/tag';
 import ProblemNewTag from '@/views/Problem/ProblemNewTag.vue';
 import { tagModule } from '@/store/modules/tag.module';
 import { UpdateProblem } from '@/models/request/update-problem';
+import { DeleteTagProblem } from '@/models/request/delete-tag-problem';
+import { AddTagProblem } from '@/models/request/add-tag-problem';
 
 @Component({
   name: 'ProblemView',
@@ -91,6 +115,13 @@ export default class ProblemView extends Vue {
 
   created() {
     this.columns = [
+      {
+        title: '',
+        key: 'isAnsywer',
+        dataIndex: 'isAnswer',
+        scopedSlots: { customRender: 'isAnswer' },
+        width: '30px',
+      },
       {
         title: 'No',
         key: 'originalCode',
@@ -110,6 +141,11 @@ export default class ProblemView extends Vue {
         key: 'problemTag',
         scopedSlots: { customRender: 'problemTag' },
         dataIndex: 'problemTag',
+      },
+      {
+        title: 'action',
+        key: 'action',
+        scopedSlots: { customRender: 'action' },
       },
     ];
   }
@@ -144,6 +180,24 @@ export default class ProblemView extends Vue {
     };
   }
 
+  handleClickFavorite(problemIndex: number, problem: Problem) {
+    this.problemsPerPage.data[problemIndex].isFavorite = !this.problemsPerPage.data[problemIndex].isFavorite;
+    problemModule.updateProblem({
+      problemID: problem.id,
+      isFavorite: problem.isFavorite,
+      isAnswer: problem.isAnswer,
+    } as UpdateProblem);
+  }
+
+  handleClickAnswer(problemIndex: number, problem: Problem) {
+    this.problemsPerPage.data[problemIndex].isAnswer = !this.problemsPerPage.data[problemIndex].isAnswer;
+    problemModule.updateProblem({
+      problemID: problem.id,
+      isFavorite: problem.isFavorite,
+      isAnswer: problem.isAnswer,
+    } as UpdateProblem);
+  }
+
   handleLinkProblemPage(problem: Problem) {
     const url: string = `${this.url}${this.selectedContest.originalCode}${problem.originalCode}/tasks/${problem.lastPath}`;
     window.open(url, '_blank');
@@ -175,20 +229,27 @@ export default class ProblemView extends Vue {
   }
 
   handleSetTag(index: number, tagID: number) {
-    const targetProblem: Problem = this.problemsPerPage.data[index];
+    const problem: Problem = this.problemsPerPage.data[index];
     const tag: Tag = tagModule.findTag(tagID);
 
-    targetProblem.tags.push(tag);
-    problemModule.updateTagProblem({ problemID: targetProblem.id, tags: targetProblem.tags } as UpdateProblem);
+    problem.tags.push(tag);
+    problemModule.addTagProblem({ tagID, problemID: problem.id } as AddTagProblem);
   }
 
-  handleCreateTag(index: number, value: string) {
-    this.problemsPerPage.data[index].tags.push(
+  handleCreateTag(index: number, word: string) {
+    const problem: Problem = this.problemsPerPage.data[index];
+    if (problem.existTag(word)) {
+      return;
+    }
+    problem.tags.push(
       new Tag().deserialize({
-        word: value,
+        word,
       }),
     );
-    tagModule.addTag(new Tag().deserialize({ word: value }));
+    tagModule.addTag(new Tag().deserialize({ word })).then((tag: Tag) => {
+      problemModule.addTagProblem({ tagID: tag.id, problemID: problem.id } as AddTagProblem);
+      tagModule.fetchTags();
+    });
   }
 
   handleChangeLevel(levelID: number) {
@@ -200,12 +261,8 @@ export default class ProblemView extends Vue {
     } as FetchProblems);
   }
 
-  handleCloseTag(problemIndex: number, tagIndex: number) {
-    this.problemsPerPage.data[problemIndex].tags.splice(tagIndex, 1);
-    problemModule.updateTagProblem({
-      problemID: this.problemsPerPage.data[problemIndex].id,
-      tags: this.problemsPerPage.data[problemIndex].tags,
-    } as UpdateProblem);
+  handleCloseTag(problemID: number, tagID: number) {
+    problemModule.deleteTagProblem({ problemID, tagID } as DeleteTagProblem);
   }
 
   fetchProblems(fetchProblems: FetchProblems) {

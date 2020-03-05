@@ -46,10 +46,10 @@ $i: 10;
 $j: 10;
 @while $j <= 40 {
   .fs-#{$j} {
-    font-size: $j;
+    font-size: $j + px;
   }
   .line-height-#{$j} {
-    line-height: $j;
+    line-height: $j + px;
   }
   $j: $j + 2;
 }

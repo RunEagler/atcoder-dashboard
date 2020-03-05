@@ -18,7 +18,6 @@
             :value="inputValue"
             @change="handleInputChange"
             @blur="handleInputConfirm"
-            @keyup.enter="handleInputConfirm"
           />
         </p>
       </template>

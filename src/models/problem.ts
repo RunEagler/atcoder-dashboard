@@ -10,6 +10,8 @@ export class Problem implements Serializable<Problem> {
   originalCode: string;
   lastPath: string;
   tags: Tag[] = [];
+  isFavorite: boolean;
+  isAnswer: boolean;
 
   deserialize(input: any): Problem {
     this.id = input.problem_id;
@@ -22,6 +24,12 @@ export class Problem implements Serializable<Problem> {
     if (input.tags && input.tags.length > 0) {
       this.tags = input.tags.map((tag: Tag) => new Tag().deserialize(tag));
     }
+    this.isFavorite = input.is_favorite;
+    this.isAnswer = input.is_answer;
     return this;
+  }
+
+  existTag(word: string) {
+    return this.tags.findIndex((tag: Tag) => tag.word === word) > -1;
   }
 }

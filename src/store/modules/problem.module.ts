@@ -5,6 +5,8 @@ import { problemApi } from '@/services/api/problem.api';
 import { Pagination } from '@/models/pagination';
 import { FetchProblems } from '@/models/request/fetch-problems';
 import { UpdateProblem } from '@/models/request/update-problem';
+import { DeleteTagProblem } from '@/models/request/delete-tag-problem';
+import { AddTagProblem } from '@/models/request/add-tag-problem';
 
 @Module({ dynamic: true, store, name: 'problemModule', namespaced: true })
 class ProblemModule extends VuexModule {
@@ -16,8 +18,18 @@ class ProblemModule extends VuexModule {
   }
 
   @Action
-  async updateTagProblem(request: UpdateProblem) {
-    await problemApi.updateTagProblem(request.problemID, request.tags);
+  async addTagProblem(request: AddTagProblem) {
+    await problemApi.addTagProblem(request.problemID, request.tagID);
+  }
+
+  @Action
+  async deleteTagProblem(request: DeleteTagProblem) {
+    await problemApi.deleteTagProblem(request.problemID, request.tagID);
+  }
+
+  @Action
+  async updateProblem(request: UpdateProblem) {
+    await problemApi.updateProblem(request.problemID, request.isAnswer, request.isFavorite);
   }
 
   @Action
