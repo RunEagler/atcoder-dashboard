@@ -1,5 +1,6 @@
-import Vuex, { ActionTree, GetterTree, MutationTree } from 'vuex';
+import Vuex, { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex';
 import Vue from 'vue';
+import { statisticsModule } from '@/store/modules/statistics.module';
 
 Vue.use(Vuex);
 
@@ -35,7 +36,12 @@ const mutations: MutationTree<RootState> = {
   },
 };
 
-const actions: ActionTree<RootState, RootState> = {};
+const actions: ActionTree<RootState, RootState> = {
+  init(ctx: ActionContext<RootState, RootState>) {
+    // authToken反映処理
+    // localeの設定
+  },
+};
 
 export const store = new Vuex.Store<RootState>({
   state: stateOfModule,

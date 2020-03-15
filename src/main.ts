@@ -3,6 +3,20 @@ import App from './App.vue';
 import router from './router';
 import { store } from './store';
 import 'ant-design-vue/dist/antd.css';
+
+import ECharts from 'vue-echarts/components/ECharts';
+import 'echarts/lib/chart/bar';
+import 'echarts/lib/chart/custom';
+import 'echarts/lib/chart/line';
+import 'echarts/lib/component/title';
+import 'echarts/lib/component/legend';
+import 'echarts/lib/component/tooltip';
+import 'echarts/lib/component/toolbox';
+import 'echarts/lib/chart/graph';
+import 'echarts/lib/chart/scatter';
+import 'echarts/lib/chart/radar';
+import 'echarts/lib/chart/pie';
+
 import {
   Affix,
   Anchor,
@@ -63,6 +77,7 @@ import {
   ConfigProvider,
   Empty,
 } from 'ant-design-vue';
+import { statisticsModule } from '@/store/modules/statistics.module';
 
 Vue.use(Affix);
 Vue.use(Anchor);
@@ -120,6 +135,8 @@ Vue.use(Skeleton);
 Vue.use(Comment);
 Vue.use(ConfigProvider);
 Vue.use(Empty);
+
+Vue.component('v-chart', ECharts);
 
 Vue.config.productionTip = false;
 

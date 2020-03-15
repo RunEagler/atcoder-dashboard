@@ -12,16 +12,20 @@
           @click="() => (collapsed = !collapsed)"
         />
       </a-layout-header>
-      <a-layout-content
-        :style="{
-          margin: '24px 16px',
-          padding: '24px',
-          background: '#fff',
-          minHeight: '280px',
-        }"
-      >
-        <layout-breadcrubms></layout-breadcrubms>
-        <router-view />
+      <a-layout-content>
+        <div style="margin: 24px 16px">
+          <layout-breadcrubms></layout-breadcrubms>
+        </div>
+        <div
+          :style="{
+            margin: '24px 16px',
+            padding: '24px',
+            background: '#fff',
+            minHeight: '600px',
+          }"
+        >
+          <router-view />
+        </div>
       </a-layout-content>
     </a-layout>
   </a-layout>
@@ -31,6 +35,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import LayoutMenus from '@/views/layout/layout-menus.vue';
 import LayoutBreadcrubms from '@/views/layout/layout-breadcrubms.vue';
+import { statisticsModule } from '@/store/modules/statistics.module';
 
 @Component({
   name: 'Layout',
@@ -38,7 +43,13 @@ import LayoutBreadcrubms from '@/views/layout/layout-breadcrubms.vue';
 })
 export default class Layout extends Vue {
   collapsed: boolean = false;
-  mounted() {}
+  mounted() {
+    statisticsModule.fetchAC();
+    statisticsModule.fetchPoints();
+    statisticsModule.fetchProblemDetails();
+    statisticsModule.fetchSubmissions();
+    statisticsModule.fetchUserLanguage();
+  }
 }
 </script>
 

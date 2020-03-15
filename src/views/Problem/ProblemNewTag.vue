@@ -21,7 +21,7 @@
           />
         </p>
       </template>
-      <a-button type="primary">New Tag</a-button>
+      <a-button type="primary" class="fs-14">New Tag</a-button>
     </a-popover>
   </div>
 </template>

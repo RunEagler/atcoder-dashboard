@@ -24,6 +24,7 @@ export default class App extends Vue {}
 
 <style lang="scss">
 @import './assets/style/app.scss';
+@import './assets/style/antdesign-custom.scss';
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

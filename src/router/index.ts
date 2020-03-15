@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import Problem from '@/views/Problem/Problem.vue';
+import Progress from '@/views/Progress/Progress.vue';
 
 Vue.use(VueRouter);
 
@@ -20,6 +21,11 @@ const routes = [
     path: '/problems',
     name: 'Problems',
     component: Problem,
+  },
+  {
+    path: '/progress',
+    name: 'Progress',
+    component: Progress,
   },
 ];
 
