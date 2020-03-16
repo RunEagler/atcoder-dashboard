@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import Problem from '@/views/Problem/Problem.vue';
 import Progress from '@/views/Progress/Progress.vue';
+import Statistics from '@/views/Statistics/Statistics.vue';
 
 Vue.use(VueRouter);
 
@@ -26,6 +27,11 @@ const routes = [
     path: '/progress',
     name: 'Progress',
     component: Progress,
+  },
+  {
+    path: '/statistics',
+    name: 'Statistics',
+    component: Statistics,
   },
 ];
 

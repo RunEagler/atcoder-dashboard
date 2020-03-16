@@ -47,7 +47,6 @@ export default class Layout extends Vue {
     statisticsModule.fetchAC();
     statisticsModule.fetchPoints();
     statisticsModule.fetchProblemDetails();
-    statisticsModule.fetchSubmissions();
     statisticsModule.fetchUserLanguage();
   }
 }

@@ -35,6 +35,11 @@ export default class LayoutMenus extends Vue {
         icon: 'progress',
         path: '/progress',
       },
+      {
+        name: '統計',
+        icon: 'progress',
+        path: '/statistics',
+      },
     ] as MenuItem[];
   }
 

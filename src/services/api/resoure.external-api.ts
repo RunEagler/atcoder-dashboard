@@ -4,6 +4,8 @@ import { ProblemDetail } from '@/models/external-api/problem-detail';
 import { UserAC } from '@/models/external-api/user-ac';
 import { UserPoint } from '@/models/external-api/user-point';
 import { UserLanguage } from '@/models/external-api/user-language';
+import { ContestProblemPair } from '@/models/external-api/contest-problem-pair';
+import { ExternalProblem } from '@/models/external-api/external-problem';
 
 class ResoureExternalAPI extends ExternalApiService {
   constructor() {
@@ -28,6 +30,10 @@ class ResoureExternalAPI extends ExternalApiService {
 
   public fetchUserLanguage(): Promise<UserLanguage[]> {
     return this.getList(UserLanguage, `/resources/lang.json`, {});
+  }
+
+  public fetchExternalProblems(): Promise<ExternalProblem[]> {
+    return this.getList(ExternalProblem, `/resources/problems.json`, {});
   }
 }
 
