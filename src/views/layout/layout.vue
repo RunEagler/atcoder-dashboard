@@ -20,7 +20,7 @@
           :style="{
             margin: '24px 16px',
             padding: '24px',
-            background: '#fff',
+            background: '#121212',
             minHeight: '600px',
           }"
         >

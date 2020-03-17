@@ -3,26 +3,38 @@ import { ColorType } from '@/constants/color.enum';
 
 export class ProgressChart extends EChartService {
   readonly colors: any = {
-    red: {
-      main: '#f5222d',
-      sub: '#ffccc7',
+    green: {
+      main: '#9254de',
+      sub: '#f9f0ff',
     },
     blue: {
-      main: '#1890ff',
-      sub: '#bae7ff',
+      main: '#13c2c2',
+      sub: '#e6fffb',
     },
-    green: {
-      main: '#52c41a',
-      sub: '#d9f7be',
+    red: {
+      main: '#fa541c',
+      sub: '#fff2e8',
     },
-    purple: {
-      main: '#722ed1',
-      sub: '#efdbff',
-    },
-    orange: {
-      main: '#fa8c16',
-      sub: '#ffe7ba',
-    },
+    // red: {
+    //   main: '#f5222d',
+    //   sub: '#ffccc7',
+    // },
+    // blue: {
+    //   main: '#1890ff',
+    //   sub: '#bae7ff',
+    // },
+    // green: {
+    //   main: '#52c41a',
+    //   sub: '#d9f7be',
+    // },
+    // purple: {
+    //   main: '#722ed1',
+    //   sub: '#efdbff',
+    // },
+    // orange: {
+    //   main: '#fa8c16',
+    //   sub: '#ffe7ba',
+    // },
   };
   title: string;
   innerRadius: number;
@@ -80,6 +92,9 @@ export class ProgressChart extends EChartService {
       title: {
         text: this.title,
         x: 'center',
+        textStyle: {
+          color: 'white',
+        },
       },
       tooltip: {
         trigger: 'item',
@@ -89,9 +104,10 @@ export class ProgressChart extends EChartService {
         orient: 'vertical',
         x: 'right',
         y: 'bottom',
-        data: ['AC', '未'],
+        data: ['AC', 'NA'],
         textStyle: {
           fontSize: 14,
+          color: 'white',
         },
         // formatter: function(name: string): string {
         //   let count: number;
@@ -117,21 +133,21 @@ export class ProgressChart extends EChartService {
               label: {
                 normal: {
                   formatter(params: any) {
-                    return self.progressPercent + '%';
+                    return `${self.completedCount}/${self.overallCount}`;
                   },
                   position: 'center',
                   show: true,
                   textStyle: {
                     fontSize: 14,
                     fontWeight: 'bold',
-                    color: this.circleColor.main,
+                    color: this.circleColor.sub,
                   },
                 },
               },
             },
             {
               value: this.overallCount - this.completedCount,
-              name: '未',
+              name: 'NA',
               itemStyle: {
                 normal: {
                   color: this.circleColor.sub,

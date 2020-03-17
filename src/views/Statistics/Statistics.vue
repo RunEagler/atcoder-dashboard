@@ -27,6 +27,9 @@ export default class Statistics extends Vue {
       title: {
         text: 'ユーザ別使用言語割合',
         left: 'center',
+        textStyle: {
+          color: 'white',
+        },
       },
       tooltip: {
         trigger: 'item',
@@ -36,6 +39,9 @@ export default class Statistics extends Vue {
         orient: 'vertical',
         left: 'left',
         data: languages,
+        textStyle: {
+          color: 'white',
+        },
       },
       series: [
         {

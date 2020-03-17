@@ -39,6 +39,19 @@ class StatisticsModule extends VuexModule {
     }, new Map<string, ProblemDetail>());
   }
 
+  get submissionsByDateString(): Map<string, Submission[]> {
+    return this.submissions.reduce((result: Map<string, Submission[]>, submission: Submission) => {
+      if (submission.result !== 'AC') {
+        return result;
+      }
+      const dateString = new Date(submission.epochSecond * 1000).toLocaleDateString();
+      const submissionsByDate: Submission[] = result.get(dateString) || [];
+      submissionsByDate.push(submission);
+      result.set(dateString, submissionsByDate);
+      return result;
+    }, new Map<string, Submission[]>());
+  }
+
   get acByProblem(): Map<string, boolean> {
     return this.submissions.reduce((result: Map<string, boolean>, submission: Submission) => {
       if (!result.has(submission.problemID) && submission.result === 'AC') {
@@ -49,6 +62,8 @@ class StatisticsModule extends VuexModule {
   }
 
   get acCountByLevelByContest(): Map<string, Map<string, number>> {
+    const uniqueACSet: Set<string> = new Set<string>();
+
     const calcFreq = (result: Map<string, Map<string, number>>, submission: Submission, contestName: string) => {
       let level: string;
       const words: string[] = submission.problemID.split('_');
@@ -74,6 +89,9 @@ class StatisticsModule extends VuexModule {
       result.set(contestName, rankMap);
     };
     return this.submissions.reduce((result: Map<string, Map<string, number>>, submission: Submission) => {
+      if (uniqueACSet.has(submission.problemID)) {
+        return result;
+      }
       if (submission.contestID.match(/abc/)) {
         calcFreq(result, submission, 'abc');
       } else if (submission.contestID.match(/arc/)) {
@@ -86,6 +104,8 @@ class StatisticsModule extends VuexModule {
         rankMap.set('s', submission.result === 'AC' ? freq + 1 : freq);
         result.set('other', rankMap);
       }
+
+      uniqueACSet.add(submission.problemID);
       return result;
     }, new Map<string, Map<string, number>>());
   }
